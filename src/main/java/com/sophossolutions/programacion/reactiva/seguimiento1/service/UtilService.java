@@ -1,5 +1,9 @@
 package com.sophossolutions.programacion.reactiva.seguimiento1.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.sophossolutions.programacion.reactiva.seguimiento1.model.OrdenLocal;
 import com.sophossolutions.programacion.reactiva.seguimiento1.model.Pedido;
 import com.sophossolutions.programacion.reactiva.seguimiento1.model.PlatoPedido;
 import org.springframework.stereotype.Service;
@@ -18,5 +22,15 @@ public class UtilService {
 
     public static String setDeleteMessage(Boolean isSuccessfullyDelete){
         return (isSuccessfullyDelete)? SUCCESSFULLY_DELETED_MESSAGE : FAILED_DELETE_MESSAGE;
+    }
+
+    public static Pedido PedidoDeserializer(String pedidoJson) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper.readValue(UtilService.setJsonFormat(pedidoJson), OrdenLocal.class);
+    }
+
+    public static String setJsonFormat(String json){
+        return json.replace("'","\"");
     }
 }
