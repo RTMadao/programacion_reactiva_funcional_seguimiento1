@@ -9,6 +9,8 @@ import com.sophossolutions.programacion.reactiva.seguimiento1.model.PlatoPedido;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
 @Service
@@ -32,5 +34,10 @@ public class UtilService {
 
     public static String setJsonFormat(String json){
         return json.replace("'","\"");
+    }
+
+    public static LocalDateTime paseToLocalDateTime(String dateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        return LocalDateTime.parse(dateTime, formatter);
     }
 }

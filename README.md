@@ -80,6 +80,44 @@ curl --location --request PUT 'http://localhost:8080/pedido/local/' \
 ### Eliminar un pedido en el local por id
 `curl --location --request DELETE 'http://localhost:8080/pedido/local/5`
 
+### Obtener información de un pedido en el local de topico de kafka
+`curl --location --request GET 'http://localhost:8080/pedido/local/topico-kakfa/Pedidos-2023-08`
+
+### Crear cola sqs
+```
+curl --location --request POST 'http://localhost:8080/pedido/local/aws/createQueue' \
+--header 'Content-Type: application/json' \
+--data-raw '
+{
+    "queueName":"local-orders"
+}'
+```
+
+### Publicar mensaje en cola sqs
+```
+curl --location --request POST 'http://localhost:8080/pedido/local/aws/postMessageQueue/local-orders' \
+--header 'Content-Type: application/json' \
+--data-raw '
+{
+    "id": 1,
+    "fecha": "2023-07-27T12:30",
+    "total": 20000
+}'
+```
+
+### Procesar mensaje de cola sqs por fecha y hora
+```
+curl --location --request POST 'http://localhost:8080/pedido/local/aws/processPedidoByFecha' \
+--header 'Content-Type: application/json' \
+--data-raw '
+{
+    "queueName":"local-orders",
+    "maxNumberMessages":10,
+    "waitTimeSeconds":5,
+    "fechaPedido":"2023-07-27T12:30"
+}'
+```
+
 ### Obtener listado de pedidos a domicilio
 `curl --location --request GET 'http://localhost:8080/pedido/domicilio/`
 
